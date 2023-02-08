@@ -193,11 +193,39 @@ Then all I do is pass those files using the template slices in argument, a veria
 
 ### The rendered test.page
 
-Here is the view o the rendered test micro service page
+Here is the view of the rendered test microservice page
+run following command on the terminal
+
+    ```bash
+        go run ./cmd/web
+    ```
+
+    It should print out:
+    
+    `starting front end service on port 8081`
+    
 
 ![test.page.gohtml](./images/TestMicroservicesrenderedpage.png)
 
 ## Creating the broker-service
+
+From the project rot folder `MicroservicesGo` creat a new `broker-service` folder
+run following command from terminal
+
+    ```bash
+    cd broker-service
+    go mod init github.com/cicio/Microservices/broker-service
+    touch main.go 
+    git init
+    git remote add origin git@github.com:cicio/MicroservicesGo.git
+    git branch -U main
+    git push -u origin main
+
+    ```
+
+
+
+`
 
 
 
