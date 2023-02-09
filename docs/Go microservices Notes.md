@@ -30,6 +30,16 @@
 
 The workspace `GOMICRO` is saved at the root of our project folder
 
+### Initialize GIT repository for version control
+
+    ```bash
+    git init
+    git remote add origin git@github.com:cicio/MicroservicesGo.git
+    git branch -U main
+    git push -u origin main
+
+    ```
+
 Each service will be hosted in its separate folder and opened into the workspace. This will allow us to have all folders open at the same time
 
 `go.mod` content shows that we are using go 1.18 version
@@ -203,7 +213,7 @@ run following command on the terminal
     It should print out:
     
     `starting front end service on port 8081`
-    
+
 
 ![test.page.gohtml](./images/TestMicroservicesrenderedpage.png)
 
@@ -214,14 +224,32 @@ run following command from terminal
 
     ```bash
     cd broker-service
-    go mod init github.com/cicio/Microservices/broker-service
-    touch main.go 
-    git init
-    git remote add origin git@github.com:cicio/MicroservicesGo.git
-    git branch -U main
-    git push -u origin main
+    go mod init github.com/cicio/Microservices/broker
+    
+    
 
     ```
+
+### Folder structure
+
+    ```bash
+    Microservices
+        broker-service
+            cmd
+                api
+                    main.go
+    ```
+
+### First steps to creat the broker service
+
+1. Has one route `"/"`
+
+2. The top level of the application will work. It should accept Jason payload
+
+3. Do something with it and then respond saying, `yeah, I've got the response`.
+
+4. It should enable connection from the front end to the broker service
+
 
 
 
