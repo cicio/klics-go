@@ -1,0 +1,8 @@
+{
+	"folders": [],
+	"settings": {
+		"files.watcherExclude": {
+			"**/target": true
+		}
+	}
+}
