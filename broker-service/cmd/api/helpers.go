@@ -27,7 +27,7 @@ func (app *Config) readJSON(w http.ResponseWriter, r *http.Request, data any) er
 	//check that there is only a single JSON value in response
 	err = dec.Decode(&struct{}{})
 	if err != io.EOF {
-		return errors.New("Body must have only one json value")
+		return errors.New("body must have only one json value")
 	}
 	return nil
 
