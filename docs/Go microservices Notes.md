@@ -250,6 +250,86 @@ run following command from terminal
 
 4. It should enable connection from the front end to the broker service
 
+Get some third party library for routing
+
+    ```go
+        go get github.com/go-chi/chi/v5
+        go get github.com/go-chi/chi/v5/middleware
+        go get github.com/go-chi/cors
+    ```
+
+    Create a `routes.go` file that will host all routes for the application
+
+    ```go
+        func routes() http.Handler {
+
+            mux := chi.NewRouter()
+
+            //specify who is alloed to connect
+            mux.Use(cors.Handler(cors.Options{
+                AllowedOrigins:   []string{"https://*", "http://*"},
+                AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+                AllowedHeaders:   []string{"Accept", "Authorization", "Content/Type", "X-CSRF-Token"},
+                ExposedHeaders:   []string{"Link"},
+                AllowCredentials: true,
+                MaxAge:           300,
+            }))
+
+            mux.Use(middleware.Heartbeat("/ping"))
+
+            return mux
+
+        }
+    ```
+
+    Okay, so this will be a route, but I want to actually add a receiver here that allows me to share any configuration I might have from my application with routes when you need them. 
+    On the `main.go` file
+
+    ```go
+// we will be using docker.
+// And docker will listen on port 80 for any container
+const webport = "80"
+
+// declare a type config of type struct that will be receiver
+// for the application
+type Config struct{}
+
+func main() {
+// create a variable `app` of type config
+    app := Config{}
+
+    //create log to print
+    log.Printf("Starting broker service on port %s", webport)
+
+    //define an http server
+    srv := &http.Server{
+        Addr: fmt.Sprintf(":%s", webport),
+    }
+
+    // start the server
+    err := srv.ListenAndServe()
+    if err != nil {
+        log.Panic(err)
+}
+
+}
+    ```
+
+Back at the `routes.go` file we will add `app` as a receiver for the `func routes() http.Handler {}`.
+
+    ```go
+    func (app *Config) routes() http.Handler
+
+    ```
+Then back at `main.go` we will add the second required field for the http server
+
+    ```go
+
+
+    ```
+
+
+
 
 
 

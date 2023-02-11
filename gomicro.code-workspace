@@ -1,5 +1,15 @@
 {
-	"folders": [],
+	"folders": [
+		{
+			"path": "front-end"
+		},
+		{
+			"path": "broker-service"
+		},
+		{
+			"path": "docs"
+		}
+	],
 	"settings": {
 		"files.watcherExclude": {
 			"**/target": true
