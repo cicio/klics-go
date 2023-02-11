@@ -8,7 +8,7 @@ import (
 
 // we will be using docker.
 // And docker will listen on port 80 for any container
-const webport = "8081"
+const webport = "80"
 
 // declare a type config of type struct that will be receiver
 // for the application
