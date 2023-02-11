@@ -164,7 +164,7 @@ Once we have that slice of strings,
         "./cmd/web/templates/footer.partial.gohtml",
     }
     ```
- 
+
  we declare a variable called template slice, which is a slice of strings and we append whatever we received as an argument here called T for template.
 
     ```go
@@ -213,7 +213,6 @@ run following command on the terminal
     It should print out:
     
     `starting front end service on port 8081`
-
 
 ![test.page.gohtml](./images/TestMicroservicesrenderedpage.png)
 
@@ -409,23 +408,95 @@ We should get as final result following outpit on the terminal console
 
 ![docker broker-service running](./images/klicsdocker-broker-service-running.png)
 
+## Add front-end functionality
+
+Adding a Button and some messaging to make sure the fromt end is talking with the broker service, by passing JSON objects
+
+1. Modify `test.page.gphtml`
+
+    Ad Button `Test broker` <a id="brokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test broker</a>
+
+    ```html
+    <a id="brokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test broker</a>
+    ```
+
+2. Add Java script code to manipulate the DOM
+
+    ```html
+    {{define "js"}}
+    <script>
+    let brokerBtn = document.getElementById("brokerBtn");
+    let output = document.getElementById("output");
+    let sent = document.getElementById("payload");
+    let received = document.getElementById("received");
+
+    brokerBtn.addEventListener("click", function() {
+
+        const body = {
+            method: 'POST',
+        }
+        fetch("http:\/\/localhost:8080", body)
+        .then((response) => response.json())
+        .then((data) => {
+            sent.innerHTML = "An empty POST request";
+            received.innerHTML = JSON.stringify(data, undefined, 4);
+            if (data.error) {
+                console.log(data.message);
+            } else {
+                output.innerHTML += `<br><strong>Response from broker service</strong>: ${data.message}`;
+
+            }
+        })
+        .catch((error) => {
+            output.innerHTML += "<br><br>Error: " + error;
+        })
+    })
+    </script>
+    {{end}}
+    ```
+
+Browsing to `localhost:80` yields ths result:
+
+![Test microservices page](./images/KLICSTestMicroservicesrenderedpage.png)
+
+## Creating some JSON helper functions to read and write json files
+
+We will create a new file `helpers.go` in the broker-service folder
+
+## Simplify handlers.go
 
 
+## Use Make to simplify deploying and building docker images
 
+place Makefilwe in the `KLICSDocker` folder
 
-    
+Edit the broker-service.`dockerfile` by eliminating the top creation of docker images. This task will be done now by the Makefile 
 
+keep only
 
-2. 
+    ```bash
 
+    FROM alpine:latest
 
+    RUN mkdir /app
 
+    COPY brokerApp /app
 
+    CMD [ "/app/brokerApp" ]
+    ```
 
+from `KLICSDocker` folder run
 
+`make up`
+`up`: starts all containers in the background without forcing build
 
-`
+`make down`
+`down`: stop docker compose
 
+`make up_build`
+`up_build`: stops docker-compose (if running), builds all projects and starts docker compose
+
+more details on `Makefile`
 
 
 
