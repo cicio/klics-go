@@ -328,6 +328,97 @@ Then back at `main.go` we will add the second required field for the http server
 
     ```
 
+## Dockerize the current version of broker microservice
+
+There are two ways we can do this
+
+1. Multi-stage build using certified go docker image
+
+    1.1. Create a Docker compose file that will run all micro services
+
+    add a folder to host the docker compose file `KLICSDocker`
+    Docker compose needs a docker file to run on.
+    So at the `broker-service` folder create a docker file `broker-service.dockerfile`
+
+    And this will be the Docker file that tells Docker compose how to build the image"
+
+        ```docker
+            # base go image
+            FROM golang:1.20-alpine as builder
+
+            RUN mkdir /app
+
+            COPY . /app
+
+            WORKDIR /app
+
+            RUN CGO_ENABLED=0 go build brokerApp ./cmd/api
+
+            RUN chmod +x /app/brokerApp
+
+        ```
+
+        The above code will build a docker image for the brokerApp
+
+        The I will create a tiny image by copying from the `builder` but only with only the executable brokerApp
+
+            ```dockerfile
+            # build a tiny docker imnage
+            FROM alpine:latest
+
+            RUN mkdir /app
+
+            COPY --from=builder /app/brokerApp /app
+
+            CMD [ "/app/brokerApp" ]
+
+            ```
+
+            To make this dockerfile run, we must create a `docker-compose.yml` file in `KLICSDocker` folder
+
+            ```yaml
+            version: '3'
+
+            services:
+
+            broker-service:
+                build:
+                context: ./../broker-service
+                dockerfile: ./../broker-service/broker-service.dockerfile
+                restart: always
+                ports:
+                - "8080:80"
+                deploy:
+                mode: replicated
+                replicas: 1
+
+            ```
+
+Now from the `KLICSDocker` folder run `docker-compose up -d`
+
+We should get as final result following outpit on the terminal console
+
+    ```bash
+    [+] Running 2/2
+    ⠿ Network klicsdocker_default             Created
+    ⠿ Container klicsdocker-broker-service-1  Started      
+
+    ```
+
+    On the Docker Desktop we can see it running
+
+![docker broker-service running](./images/klicsdocker-broker-service-running.png)
+
+
+
+
+
+    
+
+
+2. 
+
+
 
 
 
