@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "KLICSDocker"
+		},
+		{
+			"path": "authentication-service"
 		}
 	],
 	"settings": {
