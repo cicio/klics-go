@@ -1,2 +1,9 @@
 
 .DS_Store
+docs/
+KLICSDocker/
+*.init
+KLICSDocker/db-data/postgres/global/pg_control
+KLICSDocker/db-data/postgres/global/pg_control
+KLICSDocker/db-data/postgres/pg_stat_tmp/db_0.stat
+KLICSDocker/db-data/postgres/pg_stat_tmp/db_13757.stat
