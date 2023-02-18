@@ -7,3 +7,28 @@ KLICSDocker/db-data/postgres/global/pg_control
 KLICSDocker/db-data/postgres/global/pg_control
 KLICSDocker/db-data/postgres/pg_stat_tmp/db_0.stat
 KLICSDocker/db-data/postgres/pg_stat_tmp/db_13757.stat
+docs/Go microservices Notes.md
+docs/Go microservices Notes.md
+docs/Go microservices Notes.md
+authentication-service/authApp
+front-end/.metals/metals.lock.db
+front-end/.metals/metals.log
+front-end/.metals/metals.mv.db
+front-end/cmd/web/templates/test.page.orig.html
+front-end/frontApp
+KLICSDocker/db-data/postgres/base/16384/16385
+KLICSDocker/db-data/postgres/base/16384/16386
+KLICSDocker/db-data/postgres/base/16384/16393
+KLICSDocker/db-data/postgres/base/16384/pg_internal.init
+KLICSDocker/db-data/postgres/base/16384/16385
+KLICSDocker/db-data/postgres/base/16384/16386
+KLICSDocker/db-data/postgres/base/16384/16393
+KLICSDocker/db-data/postgres/base/16384/pg_internal.init
+KLICSDocker/db-data/postgres/global/pg_control
+KLICSDocker/db-data/postgres/global/pg_internal.init
+KLICSDocker/db-data/postgres/pg_stat_tmp/db_0.stat
+KLICSDocker/db-data/postgres/pg_stat_tmp/db_16384.stat
+KLICSDocker/db-data/postgres/pg_stat_tmp/global.stat
+KLICSDocker/db-data/postgres/pg_wal/000000010000000000000001
+KLICSDocker/db-data/postgres/pg_xact/0000
+KLICSDocker/db-data/postgres/postmaster.pid
