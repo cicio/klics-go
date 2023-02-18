@@ -27,6 +27,9 @@ func (app *Config) routes() http.Handler {
 	//add a new route to post to Broker
 	mux.Post("/", app.Broker)
 
+	//add route to handler app.HandleSubmission
+	mux.Post("/handle", app.HandleSubmission)
+
 	return mux
 
 }
