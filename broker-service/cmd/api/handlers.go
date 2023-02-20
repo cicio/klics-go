@@ -12,12 +12,19 @@ import (
 type RequestPayload struct {
 	Action string      `json:"action"`
 	Auth   AuthPayload `json:"auth,omitempty"`
+	Log    LogPayload  `json:"log,omitempty"`
 }
 
 // AuthPayload defines the struct with the parameters for an authentication
 type AuthPayload struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+// logPayload defines the structure for a log entry
+type LogPayload struct {
+	Name string `json:"name"`
+	Data string `json:"data"`
 }
 
 // Create a handler function that as a receiver of type
@@ -51,9 +58,52 @@ func (app *Config) HandleSubmission(w http.ResponseWriter, r *http.Request) {
 		//use the authenticate function to factor out code for simplicity
 		app.Authenticate(w, requestPayload.Auth)
 
+	case "log":
+		app.logItem(w, requestPayload.Log)
+
 	default:
 		app.errorJSON(w, errors.New("unknown action"))
 	}
+
+}
+
+func (app *Config) logItem(w http.ResponseWriter, entry LogPayload) {
+	//create some json we'll send to the logger-service. do not use MarshallIndent in production code
+	jsonData, _ := json.MarshalIndent(entry, "", "\t")
+
+	logServiceURL := "http://logger-service/log"
+
+	//call the service
+	request, err := http.NewRequest(
+		"POST",
+		logServiceURL,
+		bytes.NewBuffer(jsonData),
+	)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+	request.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+
+	response, err := client.Do(request)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusAccepted {
+		app.errorJSON(w, err)
+		return
+	}
+
+	var payload jsonResponse
+	payload.Error = false
+	payload.Message = "logged"
+
+	app.writeJSON(w, http.StatusAccepted, payload)
 
 }
 

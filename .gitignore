@@ -32,3 +32,5 @@ KLICSDocker/db-data/postgres/pg_stat_tmp/global.stat
 KLICSDocker/db-data/postgres/pg_wal/000000010000000000000001
 KLICSDocker/db-data/postgres/pg_xact/0000
 KLICSDocker/db-data/postgres/postmaster.pid
+ front-end/cmd/web/templates/test.page.gohtml.orig
+*.orig
