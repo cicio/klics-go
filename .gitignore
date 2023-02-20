@@ -1,6 +1,7 @@
 
 .DS_Store
 docs/
+gocs/images/
 KLICSDocker/
 *.init
 KLICSDocker/db-data/postgres/global/pg_control
