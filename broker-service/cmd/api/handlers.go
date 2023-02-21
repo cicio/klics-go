@@ -13,6 +13,7 @@ type RequestPayload struct {
 	Action string      `json:"action"`
 	Auth   AuthPayload `json:"auth,omitempty"`
 	Log    LogPayload  `json:"log,omitempty"`
+	Mail   MailPayload `json:"mail,omitempty"`
 }
 
 // AuthPayload defines the struct with the parameters for an authentication
@@ -25,6 +26,13 @@ type AuthPayload struct {
 type LogPayload struct {
 	Name string `json:"name"`
 	Data string `json:"data"`
+}
+
+type MailPayload struct {
+	From    string `json:"from"`
+	To      string `json:"to"`
+	Subject string `json:"subject"`
+	Message string `json:"message"`
 }
 
 // Create a handler function that as a receiver of type
@@ -60,6 +68,9 @@ func (app *Config) HandleSubmission(w http.ResponseWriter, r *http.Request) {
 
 	case "log":
 		app.logItem(w, requestPayload.Log)
+
+	case "mail":
+		app.sendMail(w, requestPayload.Mail)
 
 	default:
 		app.errorJSON(w, errors.New("unknown action"))
@@ -164,6 +175,44 @@ func (app *Config) Authenticate(w http.ResponseWriter, a AuthPayload) {
 	payload.Data = jsonFromService.Data
 
 	// Write the payload value to json as wella sthe http status Accepted
+	app.writeJSON(w, http.StatusAccepted, payload)
+
+}
+
+func (app *Config) sendMail(w http.ResponseWriter, msg MailPayload) {
+	jsonData, _ := json.MarshalIndent(msg, "", "\t")
+
+	//call the mail service
+	mailServiceURL := "http://mailer-service/send"
+
+	//post to mail service
+	request, err := http.NewRequest("POST", mailServiceURL, bytes.NewBuffer(jsonData))
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+	request.Header.Set("Content-Type", "application/json")
+
+	//creaeta  client
+	client := &http.Client{}
+	response, err := client.Do(request)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+	defer response.Body.Close()
+
+	//make sure we get back the right status code
+	if response.StatusCode != http.StatusAccepted {
+		app.errorJSON(w, errors.New("error calling mail service"))
+		return
+	}
+	//send back response
+	var payload jsonResponse
+
+	payload.Error = false
+	payload.Message = "Message sent to " + msg.To
+
 	app.writeJSON(w, http.StatusAccepted, payload)
 
 }

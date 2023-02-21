@@ -8,7 +8,7 @@ import (
 
 // we will be using docker.
 // And docker will listen on port 80 for any container
-const webport = "80"
+const webPort = "80"
 
 // declare a type config of type struct that will be receiver
 // for the application
@@ -19,11 +19,11 @@ func main() {
 	app := Config{}
 
 	//create log to print
-	log.Printf("Starting broker service on port %s\n", webport)
+	log.Printf("Starting broker service on port %s\n", webPort)
 
 	//define an http server
 	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%s", webport),
+		Addr:    fmt.Sprintf(":%s", webPort),
 		Handler: app.routes(),
 	}
 
