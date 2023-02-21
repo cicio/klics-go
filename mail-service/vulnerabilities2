@@ -1,0 +1,4 @@
+govulncheck is an experimental tool. Share feedback at https://go.dev/s/govulncheck-feedback.
+
+Using go1.20.1 and govulncheck@v0.0.0 with
+vulnerability data from https://vuln.go.dev (last modified 17 Feb 23 21:22 UTC).

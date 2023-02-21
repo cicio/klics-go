@@ -1,6 +1,6 @@
 module github.com/cicio/klics-go/logger-service
 
-go 1.20
+go 1.19
 
 require (
 	github.com/go-chi/chi v1.5.4 // indirect
